@@ -67,14 +67,19 @@ export default function SearchOverlay({ open, onClose }: Props) {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm"
-          onClick={(e) => e.target === e.currentTarget && onClose()}
         >
+          <button
+            className="absolute inset-0 w-full h-full cursor-default"
+            onClick={onClose}
+            aria-label="Close search"
+            tabIndex={-1}
+          />
           <motion.div
             initial={{ opacity: 0, y: -20, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="bg-white shadow-2xl rounded-b-3xl max-w-2xl mx-auto overflow-hidden"
+            className="relative bg-white shadow-2xl rounded-b-3xl max-w-2xl mx-auto overflow-hidden"
           >
             <div className="flex items-center gap-3 px-4 py-4 border-b">
               <Search className="w-5 h-5 text-muted-foreground flex-shrink-0" />

@@ -103,7 +103,7 @@ function mapBanner(r: Record<string, unknown>): Banner {
     bgColor: r.bg_color as string,
     textColor: r.text_color as string,
     isActive: r.is_active as boolean,
-    order: r.order as number,
+    order: r.sort_order as number,
   }
 }
 
@@ -116,7 +116,7 @@ function mapTestimonial(r: Record<string, unknown>): Testimonial {
     rating: r.rating as number,
     text: r.text as string,
     product: r.product as string | undefined,
-    date: r.date as string,
+    date: r.created_at as string,
   }
 }
 
@@ -126,7 +126,7 @@ function mapFAQ(r: Record<string, unknown>): FAQ {
     question: r.question as string,
     answer: r.answer as string,
     category: r.category as string,
-    order: r.order as number,
+    order: r.sort_order as number,
   }
 }
 
@@ -156,9 +156,9 @@ export const useCatalogStore = create<CatalogState>((set, get) => ({
       supabase.from('categories').select('*').order('name'),
       supabase.from('brands').select('*').order('name'),
       supabase.from('coupons').select('*').order('code'),
-      supabase.from('banners').select('*').eq('is_active', true).order('order'),
-      supabase.from('testimonials').select('*').order('date', { ascending: false }),
-      supabase.from('faqs').select('*').order('order'),
+      supabase.from('banners').select('*').eq('is_active', true).order('sort_order'),
+      supabase.from('testimonials').select('*').order('created_at', { ascending: false }),
+      supabase.from('faqs').select('*').order('sort_order'),
     ])
 
     set({
