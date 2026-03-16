@@ -3,12 +3,10 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ShoppingCart, Search, Menu, X, MapPin, Phone, ChevronDown, Zap } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { ShoppingCart, Search, Menu, X, MapPin, Phone, Zap, Settings } from 'lucide-react'
 import { useCartStore } from '@/store/cart-store'
-import { categories } from '@/lib/data'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import { Badge } from '@/components/ui/badge'
+import { Sheet, SheetContent } from '@/components/ui/sheet'
 import { cn } from '@/lib/utils'
 import SearchOverlay from './search-overlay'
 
@@ -32,9 +30,11 @@ const mobileMenuLinks = [
   { label: 'Track Order', href: '/track-order', icon: '📦' },
   { label: 'Support', href: '/support', icon: '💬' },
   { label: 'About', href: '/about', icon: 'ℹ️' },
+  { label: 'Admin Panel', href: '/admin/login', icon: '⚙️' },
 ]
 
 export default function Header() {
+  const [mounted, setMounted] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -42,10 +42,16 @@ export default function Header() {
   const pathname = usePathname()
 
   useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 8)
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  const displayCount = mounted ? itemCount : 0
 
   return (
     <>
@@ -97,17 +103,17 @@ export default function Header() {
               <Link
                 href="/cart"
                 className="relative p-2 rounded-xl hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
-                aria-label={`Cart (${itemCount} items)`}
+                aria-label={`Cart (${displayCount} items)`}
               >
                 <ShoppingCart className="w-5 h-5" />
-                {itemCount > 0 && (
+                {displayCount > 0 && (
                   <motion.span
-                    key={itemCount}
+                    key={displayCount}
                     initial={{ scale: 0.5 }}
                     animate={{ scale: 1 }}
                     className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-foreground text-background text-[10px] font-bold rounded-full flex items-center justify-center"
                   >
-                    {itemCount > 99 ? '99+' : itemCount}
+                    {displayCount > 99 ? '99+' : displayCount}
                   </motion.span>
                 )}
               </Link>
@@ -126,6 +132,14 @@ export default function Header() {
               >
                 <MapPin className="w-3.5 h-3.5" />
                 Track Order
+              </Link>
+
+              <Link
+                href="/admin/login"
+                className="hidden lg:inline-flex items-center justify-center w-9 h-9 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors"
+                title="Admin Panel"
+              >
+                <Settings className="w-4 h-4" />
               </Link>
             </div>
           </div>
