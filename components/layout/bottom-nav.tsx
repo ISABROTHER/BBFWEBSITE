@@ -2,9 +2,9 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Store, Search, ShoppingCart, Package, Menu, X, Phone } from 'lucide-react'
+import { Store, Search, ShoppingCart, Package } from 'lucide-react'
 import { useCartStore } from '@/store/cart-store'
 import { cn } from '@/lib/utils'
 import SearchOverlay from './search-overlay'
@@ -17,11 +17,18 @@ const navItems = [
 ]
 
 export default function BottomNav() {
+  const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
   const itemCount = useCartStore((s) => s.getItemCount())
   const [searchOpen, setSearchOpen] = useState(false)
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   if (pathname.startsWith('/admin')) return null
+
+  const displayCount = mounted ? itemCount : 0
 
   return (
     <>
@@ -55,14 +62,14 @@ export default function BottomNav() {
               >
                 <div className="relative">
                   <Icon className="w-5 h-5" />
-                  {item.isCart && itemCount > 0 && (
+                  {item.isCart && displayCount > 0 && (
                     <motion.span
-                      key={itemCount}
+                      key={displayCount}
                       initial={{ scale: 0.5 }}
                       animate={{ scale: 1 }}
                       className="absolute -top-1 -right-1.5 w-3.5 h-3.5 bg-foreground text-background text-[9px] font-bold rounded-full flex items-center justify-center"
                     >
-                      {itemCount > 9 ? '9+' : itemCount}
+                      {displayCount > 9 ? '9+' : displayCount}
                     </motion.span>
                   )}
                 </div>
