@@ -1,4 +1,5 @@
 import { Coupon } from '@/types'
+import { useCatalogStore } from '@/store/catalog-store'
 
 export const coupons: Coupon[] = [
   {
@@ -53,8 +54,13 @@ export const coupons: Coupon[] = [
   },
 ]
 
+function getCouponList(): Coupon[] {
+  const { loaded, coupons: sbCoupons } = useCatalogStore.getState()
+  return loaded && sbCoupons.length > 0 ? sbCoupons : coupons
+}
+
 export function validateCoupon(code: string, orderTotal: number): { valid: boolean; coupon?: Coupon; error?: string } {
-  const coupon = coupons.find(c => c.code.toUpperCase() === code.toUpperCase())
+  const coupon = getCouponList().find(c => c.code.toUpperCase() === code.toUpperCase())
   if (!coupon) return { valid: false, error: 'Invalid coupon code' }
   if (!coupon.isActive) return { valid: false, error: 'This coupon is no longer active' }
   if (new Date(coupon.expiresAt) < new Date()) return { valid: false, error: 'This coupon has expired' }

@@ -7,11 +7,13 @@ import { useAdminStore } from '@/store/admin-store'
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [hydrated, setHydrated] = useState(false)
   const isAuthenticated = useAdminStore((s) => s.isAuthenticated)
+  const checkSession = useAdminStore((s) => s.checkSession)
   const router = useRouter()
   const pathname = usePathname()
 
   useEffect(() => {
-    setHydrated(true)
+    useAdminStore.persist.rehydrate()
+    checkSession().then(() => setHydrated(true))
   }, [])
 
   useEffect(() => {

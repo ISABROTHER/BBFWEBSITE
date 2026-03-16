@@ -2,17 +2,14 @@
 
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
+import { supabase } from '@/lib/supabase/client'
 
 interface AdminState {
   isAuthenticated: boolean
   adminEmail: string | null
-  login: (email: string, password: string) => boolean
-  logout: () => void
-}
-
-const ADMIN_CREDENTIALS = {
-  email: 'admin@novamobile.com',
-  password: 'admin123',
+  login: (email: string, password: string) => Promise<boolean>
+  logout: () => Promise<void>
+  checkSession: () => Promise<void>
 }
 
 const safeSessionStorage = {
@@ -36,15 +33,40 @@ export const useAdminStore = create<AdminState>()(
       isAuthenticated: false,
       adminEmail: null,
 
-      login: (email, password) => {
-        if (email === ADMIN_CREDENTIALS.email && password === ADMIN_CREDENTIALS.password) {
+      login: async (email, password) => {
+        try {
+          const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+          if (error || !data.user) return false
+          const role = data.user.app_metadata?.role
+          if (role !== 'admin') {
+            await supabase.auth.signOut()
+            return false
+          }
           set({ isAuthenticated: true, adminEmail: email })
           return true
+        } catch {
+          return false
         }
-        return false
       },
 
-      logout: () => set({ isAuthenticated: false, adminEmail: null }),
+      logout: async () => {
+        await supabase.auth.signOut()
+        set({ isAuthenticated: false, adminEmail: null })
+      },
+
+      checkSession: async () => {
+        try {
+          const { data } = await supabase.auth.getSession()
+          const user = data.session?.user
+          if (user && user.app_metadata?.role === 'admin') {
+            set({ isAuthenticated: true, adminEmail: user.email ?? null })
+          } else {
+            set({ isAuthenticated: false, adminEmail: null })
+          }
+        } catch {
+          set({ isAuthenticated: false, adminEmail: null })
+        }
+      },
     }),
     {
       name: 'nova-admin',

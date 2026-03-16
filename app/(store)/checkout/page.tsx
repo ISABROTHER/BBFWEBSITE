@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Shield, CreditCard, Banknote, Smartphone, ChevronDown, Check } from 'lucide-react'
+import { toast } from 'sonner'
 import { useCartStore } from '@/store/cart-store'
 import { saveOrder } from '@/lib/data'
 import { generateOrderNumber, generateTrackingCode, formatPrice, getEstimatedDelivery } from '@/lib/utils'
@@ -65,13 +66,13 @@ export default function CheckoutPage() {
   async function onSubmit(data: CheckoutForm) {
     if (items.length === 0) return
     setLoading(true)
-    await new Promise(r => setTimeout(r, 1200))
 
+    const orderId = `ord-${Date.now()}`
     const orderNumber = generateOrderNumber()
     const trackingCode = generateTrackingCode()
 
     const order: Order = {
-      id: `ord-${Date.now()}`,
+      id: orderId,
       orderNumber,
       trackingCode,
       items: items.map(i => ({
@@ -105,7 +106,7 @@ export default function CheckoutPage() {
       trackingEvents: [
         {
           id: `te-${Date.now()}`,
-          orderId: `ord-${Date.now()}`,
+          orderId,
           status: 'pending',
           message: 'Order placed successfully',
           timestamp: new Date().toISOString(),
@@ -116,9 +117,15 @@ export default function CheckoutPage() {
       updatedAt: new Date().toISOString(),
     }
 
-    saveOrder(order)
-    clearCart()
+    const result = await saveOrder(order)
+    setLoading(false)
 
+    if (!result.success) {
+      toast.error('Failed to place order. Please try again.')
+      return
+    }
+
+    clearCart()
     router.push(`/order-success?order=${orderNumber}&tracking=${trackingCode}`)
   }
 

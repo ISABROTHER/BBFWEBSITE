@@ -1,4 +1,5 @@
 import { Category } from '@/types'
+import { useCatalogStore } from '@/store/catalog-store'
 
 export const categories: Category[] = [
   {
@@ -75,10 +76,15 @@ export const categories: Category[] = [
   },
 ]
 
+function getCategoryList(): Category[] {
+  const { loaded, categories: sbCategories } = useCatalogStore.getState()
+  return loaded && sbCategories.length > 0 ? sbCategories : categories
+}
+
 export function getCategoryBySlug(slug: string): Category | undefined {
-  return categories.find(c => c.slug === slug)
+  return getCategoryList().find(c => c.slug === slug)
 }
 
 export function getFeaturedCategories(): Category[] {
-  return categories.filter(c => c.featured)
+  return getCategoryList().filter(c => c.featured)
 }

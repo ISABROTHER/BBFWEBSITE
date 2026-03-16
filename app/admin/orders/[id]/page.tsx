@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import { notFound, useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Copy, Check, Printer } from 'lucide-react'
+import { ArrowLeft, Copy, Check } from 'lucide-react'
 import AdminSidebar from '@/components/admin/admin-sidebar'
 import AdminTopbar from '@/components/admin/admin-topbar'
 import StatusBadge from '@/components/ui/status-badge'
@@ -11,24 +11,46 @@ import TrackingTimeline from '@/components/ui/tracking-timeline'
 import { getOrderById } from '@/lib/data'
 import { formatPrice, formatDateTime, copyToClipboard } from '@/lib/utils'
 import { toast } from 'sonner'
-import type { OrderStatus } from '@/types'
+import type { Order, OrderStatus } from '@/types'
 
 const orderStatuses: OrderStatus[] = ['pending', 'payment_confirmed', 'processing', 'packed', 'shipped', 'out_for_delivery', 'delivered']
 
 export default function AdminOrderDetailPage({ params }: { params: { id: string } }) {
-  const orderData = getOrderById(params.id)
-  if (!orderData) notFound()
-  const order = orderData!
-
+  const [order, setOrder] = useState<Order | null>(null)
+  const [loading, setLoading] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [trackingCopied, setTrackingCopied] = useState(false)
+  const router = useRouter()
+
+  useEffect(() => {
+    getOrderById(params.id).then(data => {
+      if (!data) router.replace('/admin/orders')
+      else setOrder(data)
+      setLoading(false)
+    })
+  }, [params.id])
 
   async function handleCopyTracking() {
+    if (!order) return
     await copyToClipboard(order.trackingCode)
     setTrackingCopied(true)
     toast.success('Tracking code copied!')
     setTimeout(() => setTrackingCopied(false), 2000)
   }
+
+  if (loading) {
+    return (
+      <div className="flex h-screen bg-slate-50 overflow-hidden">
+        <AdminSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <AdminTopbar onMenuClick={() => setSidebarOpen(true)} title="Order" />
+          <main className="flex-1 flex items-center justify-center text-muted-foreground text-sm">Loading...</main>
+        </div>
+      </div>
+    )
+  }
+
+  if (!order) return null
 
   return (
     <div className="flex h-screen bg-slate-50 overflow-hidden">

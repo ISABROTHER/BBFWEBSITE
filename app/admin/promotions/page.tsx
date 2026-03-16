@@ -4,13 +4,16 @@ import { useState } from 'react'
 import { Plus, Tag, Trash2, ToggleLeft, ToggleRight } from 'lucide-react'
 import AdminSidebar from '@/components/admin/admin-sidebar'
 import AdminTopbar from '@/components/admin/admin-topbar'
-import { coupons } from '@/lib/data'
+import { coupons as fallbackCoupons } from '@/lib/data'
+import { useCatalogStore } from '@/store/catalog-store'
 import { formatDate } from '@/lib/utils'
 import { toast } from 'sonner'
 
 export default function AdminPromotionsPage() {
+  const sbCoupons = useCatalogStore((s) => s.coupons)
+  const activeCoupons = sbCoupons.length > 0 ? sbCoupons : fallbackCoupons
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [couponList, setCouponList] = useState(coupons)
+  const [couponList, setCouponList] = useState(activeCoupons)
 
   function toggleCoupon(id: string) {
     setCouponList(prev => prev.map(c => c.id === id ? { ...c, isActive: !c.isActive } : c))

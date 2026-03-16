@@ -1,4 +1,5 @@
 import { Product } from '@/types'
+import { useCatalogStore } from '@/store/catalog-store'
 
 export const products: Product[] = [
   {
@@ -201,9 +202,7 @@ export const products: Product[] = [
     categorySlug: 'android-phones',
     description: 'The Galaxy A54 5G delivers a premium experience at a mid-range price, featuring a stunning 120Hz display and a powerful triple camera system.',
     shortDescription: 'Exynos 1380, 120Hz AMOLED, 50MP triple camera',
-    images: [
-      'https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=800',
-    ],
+    images: ['https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=800'],
     thumbnail: 'https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=400',
     variants: [
       { id: 'v5-1', storage: '128GB', color: 'Awesome Graphite', colorHex: '#4A4A4A', condition: 'new', price: 449, stock: 40, sku: 'SGA54-128-AG' },
@@ -245,9 +244,7 @@ export const products: Product[] = [
     categorySlug: 'android-phones',
     description: 'OnePlus 12 is the speed flagship that delivers Snapdragon 8 Gen 3 performance with Hasselblad camera tuning and 100W SUPERVOOC charging.',
     shortDescription: 'Snapdragon 8 Gen 3, Hasselblad camera, 100W charging',
-    images: [
-      'https://images.pexels.com/photos/47261/pexels-photo-47261.jpeg?auto=compress&cs=tinysrgb&w=800',
-    ],
+    images: ['https://images.pexels.com/photos/47261/pexels-photo-47261.jpeg?auto=compress&cs=tinysrgb&w=800'],
     thumbnail: 'https://images.pexels.com/photos/47261/pexels-photo-47261.jpeg?auto=compress&cs=tinysrgb&w=400',
     variants: [
       { id: 'v6-1', storage: '256GB', color: 'Flowy Emerald', colorHex: '#2E8B57', condition: 'new', price: 799, salePrice: 749, stock: 22, sku: 'OP12-256-FE' },
@@ -291,9 +288,7 @@ export const products: Product[] = [
     categorySlug: 'android-phones',
     description: 'The Galaxy Z Fold 5 is the ultimate foldable smartphone, offering a compact form when folded and a full tablet experience when opened.',
     shortDescription: 'Snapdragon 8 Gen 2, foldable AMOLED, S Pen support',
-    images: [
-      'https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=800',
-    ],
+    images: ['https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=800'],
     thumbnail: 'https://images.pexels.com/photos/1092644/pexels-photo-1092644.jpeg?auto=compress&cs=tinysrgb&w=400',
     variants: [
       { id: 'v7-1', storage: '256GB', color: 'Phantom Black', colorHex: '#1C1C1E', condition: 'new', price: 1799, salePrice: 1699, stock: 12, sku: 'SGZF5-256-PB' },
@@ -333,9 +328,7 @@ export const products: Product[] = [
     categorySlug: 'tablets',
     description: 'The iPad Pro with M2 chip delivers extreme performance with the most advanced display, cameras, and wireless connectivity ever in an iPad.',
     shortDescription: 'Apple M2 chip, Liquid Retina XDR, 5G capable',
-    images: [
-      'https://images.pexels.com/photos/1542252/pexels-photo-1542252.jpeg?auto=compress&cs=tinysrgb&w=800',
-    ],
+    images: ['https://images.pexels.com/photos/1542252/pexels-photo-1542252.jpeg?auto=compress&cs=tinysrgb&w=800'],
     thumbnail: 'https://images.pexels.com/photos/1542252/pexels-photo-1542252.jpeg?auto=compress&cs=tinysrgb&w=400',
     variants: [
       { id: 'v8-1', storage: '256GB', color: 'Space Gray', colorHex: '#3A3A3C', condition: 'new', price: 1099, salePrice: 999, stock: 18, sku: 'IPADPRO-256-SG' },
@@ -376,9 +369,7 @@ export const products: Product[] = [
     categorySlug: 'smartwatches',
     description: 'Apple Watch Series 9 is the ultimate smartwatch with the new S9 chip, Double Tap gesture, and the brightest Apple Watch display ever.',
     shortDescription: 'S9 chip, Double Tap, Always-On Retina display',
-    images: [
-      'https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg?auto=compress&cs=tinysrgb&w=800',
-    ],
+    images: ['https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg?auto=compress&cs=tinysrgb&w=800'],
     thumbnail: 'https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg?auto=compress&cs=tinysrgb&w=400',
     variants: [
       { id: 'v9-1', storage: '41mm', color: 'Midnight', colorHex: '#1C1C1E', condition: 'new', price: 399, salePrice: 379, stock: 30, sku: 'AWS9-41-MN' },
@@ -419,9 +410,7 @@ export const products: Product[] = [
     categorySlug: 'earbuds',
     description: 'AirPods Pro deliver up to 2x more Active Noise Cancellation than before, plus Adaptive Transparency, and Personalized Spatial Audio.',
     shortDescription: 'H2 chip, Active Noise Cancellation, Spatial Audio',
-    images: [
-      'https://images.pexels.com/photos/3780681/pexels-photo-3780681.jpeg?auto=compress&cs=tinysrgb&w=800',
-    ],
+    images: ['https://images.pexels.com/photos/3780681/pexels-photo-3780681.jpeg?auto=compress&cs=tinysrgb&w=800'],
     thumbnail: 'https://images.pexels.com/photos/3780681/pexels-photo-3780681.jpeg?auto=compress&cs=tinysrgb&w=400',
     variants: [
       { id: 'v10-1', color: 'White', colorHex: '#FFFFFF', condition: 'new', price: 249, salePrice: 229, stock: 50, sku: 'APP2-WH', storage: 'Standard' },
@@ -460,9 +449,7 @@ export const products: Product[] = [
     categorySlug: 'earbuds',
     description: 'Galaxy Buds2 Pro deliver premium hi-fi sound with 24bit Hi-Fi Audio, Intelligent ANC, and a compact ergonomic design.',
     shortDescription: '24bit Hi-Fi audio, Intelligent ANC, compact design',
-    images: [
-      'https://images.pexels.com/photos/3780681/pexels-photo-3780681.jpeg?auto=compress&cs=tinysrgb&w=800',
-    ],
+    images: ['https://images.pexels.com/photos/3780681/pexels-photo-3780681.jpeg?auto=compress&cs=tinysrgb&w=800'],
     thumbnail: 'https://images.pexels.com/photos/3780681/pexels-photo-3780681.jpeg?auto=compress&cs=tinysrgb&w=400',
     variants: [
       { id: 'v11-1', color: 'Graphite', colorHex: '#4A4A4A', condition: 'new', price: 229, salePrice: 179, stock: 35, sku: 'SGB2P-GR', storage: 'Standard' },
@@ -501,9 +488,7 @@ export const products: Product[] = [
     categorySlug: 'power-banks',
     description: 'The Anker PowerCore 26800 is a high-capacity portable charger with 26800mAh that can charge your iPhone multiple times.',
     shortDescription: '26800mAh, dual USB-A + USB-C, 15W output',
-    images: [
-      'https://images.pexels.com/photos/6804081/pexels-photo-6804081.jpeg?auto=compress&cs=tinysrgb&w=800',
-    ],
+    images: ['https://images.pexels.com/photos/6804081/pexels-photo-6804081.jpeg?auto=compress&cs=tinysrgb&w=800'],
     thumbnail: 'https://images.pexels.com/photos/6804081/pexels-photo-6804081.jpeg?auto=compress&cs=tinysrgb&w=400',
     variants: [
       { id: 'v12-1', color: 'Black', colorHex: '#1C1C1E', condition: 'new', price: 59, stock: 80, sku: 'APC26800-BK', storage: '26800mAh' },
@@ -539,9 +524,7 @@ export const products: Product[] = [
     categorySlug: 'chargers',
     description: 'The MagSafe Charger provides up to 15W of wireless charging for iPhone 12 and later, with a perfectly aligned magnetic connection.',
     shortDescription: '15W MagSafe charging for iPhone 12 and later',
-    images: [
-      'https://images.pexels.com/photos/4526407/pexels-photo-4526407.jpeg?auto=compress&cs=tinysrgb&w=800',
-    ],
+    images: ['https://images.pexels.com/photos/4526407/pexels-photo-4526407.jpeg?auto=compress&cs=tinysrgb&w=800'],
     thumbnail: 'https://images.pexels.com/photos/4526407/pexels-photo-4526407.jpeg?auto=compress&cs=tinysrgb&w=400',
     variants: [
       { id: 'v13-1', color: 'White', colorHex: '#FFFFFF', condition: 'new', price: 39, stock: 100, sku: 'MSFC15-WH', storage: '1m Cable' },
@@ -578,9 +561,7 @@ export const products: Product[] = [
     categorySlug: 'cases',
     description: 'The iPhone 15 Pro Clear Case with MagSafe shows off the design of iPhone 15 Pro while adding MagSafe-compatible wireless charging.',
     shortDescription: 'MagSafe compatible, ultra-clear design',
-    images: [
-      'https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=800',
-    ],
+    images: ['https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=800'],
     thumbnail: 'https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400',
     variants: [
       { id: 'v14-1', color: 'Clear', colorHex: '#FFFFFF', condition: 'new', price: 49, stock: 60, sku: 'IPH15PC-CL', storage: 'iPhone 15 Pro' },
@@ -617,9 +598,7 @@ export const products: Product[] = [
     categorySlug: 'android-phones',
     description: 'Xiaomi 14 Ultra pushes mobile photography to new extremes with Leica optics, a large 1-inch sensor, and Snapdragon 8 Gen 3.',
     shortDescription: 'Leica optics, 1-inch sensor, Snapdragon 8 Gen 3',
-    images: [
-      'https://images.pexels.com/photos/1174775/pexels-photo-1174775.jpeg?auto=compress&cs=tinysrgb&w=800',
-    ],
+    images: ['https://images.pexels.com/photos/1174775/pexels-photo-1174775.jpeg?auto=compress&cs=tinysrgb&w=800'],
     thumbnail: 'https://images.pexels.com/photos/1174775/pexels-photo-1174775.jpeg?auto=compress&cs=tinysrgb&w=400',
     variants: [
       { id: 'v15-1', storage: '256GB', color: 'Black', colorHex: '#1C1C1E', condition: 'new', price: 1299, salePrice: 1199, stock: 15, sku: 'XI14U-256-BK' },
@@ -659,9 +638,7 @@ export const products: Product[] = [
     categorySlug: 'smartwatches',
     description: 'Galaxy Watch 6 Classic brings back the iconic rotating bezel with enhanced health tracking and Wear OS 4 powered by Samsung.',
     shortDescription: 'Rotating bezel, advanced health tracking, Wear OS 4',
-    images: [
-      'https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg?auto=compress&cs=tinysrgb&w=800',
-    ],
+    images: ['https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg?auto=compress&cs=tinysrgb&w=800'],
     thumbnail: 'https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg?auto=compress&cs=tinysrgb&w=400',
     variants: [
       { id: 'v16-1', storage: '43mm', color: 'Black', colorHex: '#1C1C1E', condition: 'new', price: 399, salePrice: 349, stock: 25, sku: 'SGW6C-43-BK' },
@@ -700,9 +677,7 @@ export const products: Product[] = [
     categorySlug: 'android-phones',
     description: 'Sony Xperia 1 V is engineered for creators with a 4K HDR OLED display, Zeiss optics, and professional-grade video capabilities.',
     shortDescription: '4K HDR OLED, Zeiss optics, professional video',
-    images: [
-      'https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=800',
-    ],
+    images: ['https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=800'],
     thumbnail: 'https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400',
     variants: [
       { id: 'v17-1', storage: '256GB', color: 'Black', colorHex: '#1C1C1E', condition: 'new', price: 1399, salePrice: 1299, stock: 10, sku: 'SXP1V-256-BK' },
@@ -738,11 +713,9 @@ export const products: Product[] = [
     brandId: 'b1',
     categoryId: 'cat1',
     categorySlug: 'iphones',
-    description: 'iPhone 14 features Crash Detection, Emergency SOS via satellite, and an improved dual-camera system — all in a sleek aluminum design.',
+    description: 'iPhone 14 features Crash Detection, Emergency SOS via satellite, and an improved dual-camera system.',
     shortDescription: 'A15 Bionic, improved camera, Emergency SOS via satellite',
-    images: [
-      'https://images.pexels.com/photos/1294886/pexels-photo-1294886.jpeg?auto=compress&cs=tinysrgb&w=800',
-    ],
+    images: ['https://images.pexels.com/photos/1294886/pexels-photo-1294886.jpeg?auto=compress&cs=tinysrgb&w=800'],
     thumbnail: 'https://images.pexels.com/photos/1294886/pexels-photo-1294886.jpeg?auto=compress&cs=tinysrgb&w=400',
     variants: [
       { id: 'v18-1', storage: '128GB', color: 'Midnight', colorHex: '#1C1C1E', condition: 'new', price: 699, salePrice: 599, stock: 35, sku: 'IPH14-128-MN' },
@@ -782,11 +755,9 @@ export const products: Product[] = [
     brandId: 'b2',
     categoryId: 'cat2',
     categorySlug: 'android-phones',
-    description: 'Galaxy S23 FE brings the best of Samsung Galaxy S23 features at a more accessible price point, making flagship experiences available to more people.',
+    description: 'Galaxy S23 FE brings the best of Samsung Galaxy S23 features at a more accessible price point.',
     shortDescription: 'Snapdragon 8 Gen 1, 50MP camera, 25W fast charging',
-    images: [
-      'https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=800',
-    ],
+    images: ['https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=800'],
     thumbnail: 'https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=400',
     variants: [
       { id: 'v19-1', storage: '128GB', color: 'Graphite', colorHex: '#4A4A4A', condition: 'new', price: 599, salePrice: 499, stock: 30, sku: 'SGS23FE-128-GR' },
@@ -825,9 +796,7 @@ export const products: Product[] = [
     categorySlug: 'cases',
     description: '2-pack of premium 9H tempered glass screen protectors for iPhone 15 with easy installation kit and full edge-to-edge coverage.',
     shortDescription: '9H tempered glass, 2-pack, edge-to-edge protection',
-    images: [
-      'https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=800',
-    ],
+    images: ['https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=800'],
     thumbnail: 'https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400',
     variants: [
       { id: 'v20-1', color: 'Clear', colorHex: '#FFFFFF', condition: 'new', price: 19, stock: 200, sku: 'TGIPH15-CL-2P', storage: '2-Pack' },
@@ -855,39 +824,44 @@ export const products: Product[] = [
   },
 ]
 
+function getProductList(): Product[] {
+  const { loaded, products: sbProducts } = useCatalogStore.getState()
+  return loaded && sbProducts.length > 0 ? sbProducts : products
+}
+
 export function getProductBySlug(slug: string): Product | undefined {
-  return products.find(p => p.slug === slug)
+  return getProductList().find(p => p.slug === slug)
 }
 
 export function getProductById(id: string): Product | undefined {
-  return products.find(p => p.id === id)
+  return getProductList().find(p => p.id === id)
 }
 
 export function getFeaturedProducts(): Product[] {
-  return products.filter(p => p.isFeatured && p.isVisible)
+  return getProductList().filter(p => p.isFeatured && p.isVisible)
 }
 
 export function getNewArrivals(): Product[] {
-  return products.filter(p => p.isNew && p.isVisible).slice(0, 8)
+  return getProductList().filter(p => p.isNew && p.isVisible).slice(0, 8)
 }
 
 export function getBestsellers(): Product[] {
-  return products.filter(p => p.isBestseller && p.isVisible).slice(0, 8)
+  return getProductList().filter(p => p.isBestseller && p.isVisible).slice(0, 8)
 }
 
 export function getProductsByCategory(categorySlug: string): Product[] {
-  return products.filter(p => p.categorySlug === categorySlug && p.isVisible)
+  return getProductList().filter(p => p.categorySlug === categorySlug && p.isVisible)
 }
 
 export function getRelatedProducts(productId: string, categorySlug: string, limit = 4): Product[] {
-  return products
+  return getProductList()
     .filter(p => p.id !== productId && p.categorySlug === categorySlug && p.isVisible)
     .slice(0, limit)
 }
 
 export function searchProducts(query: string): Product[] {
   const q = query.toLowerCase()
-  return products.filter(p =>
+  return getProductList().filter(p =>
     p.isVisible && (
       p.name.toLowerCase().includes(q) ||
       p.brand.toLowerCase().includes(q) ||

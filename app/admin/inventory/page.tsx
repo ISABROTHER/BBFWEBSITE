@@ -4,13 +4,16 @@ import { useState } from 'react'
 import { TriangleAlert as AlertTriangle, Package } from 'lucide-react'
 import AdminSidebar from '@/components/admin/admin-sidebar'
 import AdminTopbar from '@/components/admin/admin-topbar'
-import { products } from '@/lib/data'
+import { products as fallbackProducts } from '@/lib/data'
+import { useCatalogStore } from '@/store/catalog-store'
 import { formatPrice } from '@/lib/utils'
 import { toast } from 'sonner'
 
 export default function AdminInventoryPage() {
+  const sbProducts = useCatalogStore((s) => s.products)
+  const activeProducts = sbProducts.length > 0 ? sbProducts : fallbackProducts
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [inventory, setInventory] = useState(products.map(p => ({ ...p, newStock: String(p.stock) })))
+  const [inventory, setInventory] = useState(activeProducts.map(p => ({ ...p, newStock: String(p.stock) })))
 
   const lowStockProducts = inventory.filter(p => p.stock < 15)
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ShoppingBag, DollarSign, Package, Truck, TrendingUp, TriangleAlert as AlertTriangle, Users, ChartBar as BarChart3, ArrowRight, Eye } from 'lucide-react'
 import AdminSidebar from '@/components/admin/admin-sidebar'
@@ -30,7 +30,11 @@ const topProducts = [
 
 export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const orders = getAllOrders()
+  const [orders, setOrders] = useState<Awaited<ReturnType<typeof getAllOrders>>>([])
+
+  useEffect(() => {
+    getAllOrders().then(setOrders)
+  }, [])
 
   const maxRevenue = Math.max(...revenueData.map(d => d.revenue))
 

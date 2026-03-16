@@ -1,4 +1,5 @@
-import { Order, TrackingEvent } from '@/types'
+import { Order } from '@/types'
+import { supabase } from '@/lib/supabase/client'
 
 export const sampleOrders: Order[] = [
   {
@@ -55,35 +56,109 @@ export const sampleOrders: Order[] = [
   },
 ]
 
-let ordersStore: Order[] = [...sampleOrders]
-
-export function getOrderByTrackingCode(trackingCode: string, identifier: string): Order | undefined {
-  const code = trackingCode.toUpperCase().trim()
-  const id = identifier.toLowerCase().trim()
-  return ordersStore.find(o => {
-    const matchesCode = o.trackingCode.toUpperCase() === code
-    const matchesEmail = o.shippingAddress.email.toLowerCase() === id
-    const matchesPhone = o.shippingAddress.phone.replace(/\D/g, '') === id.replace(/\D/g, '')
-    return matchesCode && (matchesEmail || matchesPhone)
-  })
+function mapOrderRow(r: Record<string, unknown>): Order {
+  return {
+    id: r.id as string,
+    orderNumber: r.order_number as string,
+    trackingCode: r.tracking_code as string,
+    items: r.items as Order['items'],
+    shippingAddress: r.shipping_address as Order['shippingAddress'],
+    billingAddress: r.billing_address as Order['billingAddress'],
+    paymentMethod: r.payment_method as Order['paymentMethod'],
+    status: r.status as Order['status'],
+    paymentStatus: r.payment_status as Order['paymentStatus'],
+    subtotal: r.subtotal as number,
+    shippingFee: r.shipping_fee as number,
+    tax: r.tax as number,
+    discount: r.discount as number,
+    couponCode: r.coupon_code as string | undefined,
+    total: r.total as number,
+    notes: r.notes as string | undefined,
+    courierName: r.courier_name as string | undefined,
+    courierTrackingNumber: r.courier_tracking_number as string | undefined,
+    estimatedDelivery: r.estimated_delivery as string | undefined,
+    trackingEvents: (r.tracking_events as Order['trackingEvents']) ?? [],
+    adminNotes: r.admin_notes as string | undefined,
+    createdAt: r.created_at as string,
+    updatedAt: r.updated_at as string,
+  }
 }
 
-export function saveOrder(order: Order): void {
-  ordersStore.push(order)
+export async function getOrderByTrackingCode(trackingCode: string, identifier: string): Promise<Order | null> {
+  try {
+    const { data, error } = await supabase.rpc('find_order_by_tracking', {
+      p_tracking_code: trackingCode.toUpperCase().trim(),
+      p_identifier: identifier.toLowerCase().trim(),
+    })
+    if (error || !data || data.length === 0) return null
+    return mapOrderRow(data[0] as Record<string, unknown>)
+  } catch {
+    return null
+  }
 }
 
-export function getAllOrders(): Order[] {
-  return [...ordersStore]
+export async function saveOrder(order: Order): Promise<{ success: boolean; error?: string }> {
+  try {
+    const { error } = await supabase.from('orders').insert({
+      id: order.id,
+      order_number: order.orderNumber,
+      tracking_code: order.trackingCode,
+      items: order.items,
+      shipping_address: order.shippingAddress,
+      billing_address: order.billingAddress ?? null,
+      payment_method: order.paymentMethod,
+      status: order.status,
+      payment_status: order.paymentStatus,
+      subtotal: order.subtotal,
+      shipping_fee: order.shippingFee,
+      tax: order.tax,
+      discount: order.discount,
+      coupon_code: order.couponCode ?? null,
+      total: order.total,
+      notes: order.notes ?? null,
+      estimated_delivery: order.estimatedDelivery ?? null,
+      tracking_events: order.trackingEvents,
+    })
+    if (error) return { success: false, error: error.message }
+    return { success: true }
+  } catch (e) {
+    return { success: false, error: String(e) }
+  }
 }
 
-export function getOrderById(id: string): Order | undefined {
-  return ordersStore.find(o => o.id === id)
+export async function getAllOrders(): Promise<Order[]> {
+  try {
+    const { data, error } = await supabase
+      .from('orders')
+      .select('*')
+      .order('created_at', { ascending: false })
+    if (error || !data) return sampleOrders
+    return data.map(r => mapOrderRow(r as Record<string, unknown>))
+  } catch {
+    return sampleOrders
+  }
 }
 
-export function updateOrderStatus(orderId: string, status: Order['status']): void {
-  const order = ordersStore.find(o => o.id === orderId)
-  if (order) {
-    order.status = status
-    order.updatedAt = new Date().toISOString()
+export async function getOrderById(id: string): Promise<Order | null> {
+  try {
+    const { data, error } = await supabase
+      .from('orders')
+      .select('*')
+      .eq('id', id)
+      .maybeSingle()
+    if (error || !data) return null
+    return mapOrderRow(data as Record<string, unknown>)
+  } catch {
+    return null
+  }
+}
+
+export async function updateOrderStatus(orderId: string, status: Order['status']): Promise<void> {
+  try {
+    await supabase
+      .from('orders')
+      .update({ status, updated_at: new Date().toISOString() })
+      .eq('id', orderId)
+  } catch {
   }
 }
