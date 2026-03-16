@@ -61,8 +61,8 @@ export default function ProductCard({ product, view = 'grid' }: Props) {
         animate={{ opacity: 1, y: 0 }}
         className="bg-white rounded-2xl border border-border hover:border-slate-300 hover:shadow-lg transition-all duration-300 overflow-hidden"
       >
-        <Link href={`/product/${product.slug}`} className="flex gap-4 p-4">
-          <div className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-xl overflow-hidden bg-secondary flex-shrink-0">
+        <div className="flex gap-4 p-4">
+          <Link href={`/product/${product.slug}`} className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-xl overflow-hidden bg-secondary flex-shrink-0">
             <img
               src={imgError ? 'https://images.pexels.com/photos/1294886/pexels-photo-1294886.jpeg?w=200' : product.thumbnail}
               alt={product.name}
@@ -73,11 +73,13 @@ export default function ProductCard({ product, view = 'grid' }: Props) {
             {hasDiscount && (
               <span className="badge-sale absolute top-1.5 right-1.5">-{discountPct}%</span>
             )}
-          </div>
+          </Link>
           <div className="flex-1 min-w-0 flex flex-col justify-between">
             <div>
               <p className="text-xs text-muted-foreground mb-0.5">{product.brand}</p>
-              <h3 className="font-semibold text-sm sm:text-base line-clamp-2">{product.name}</h3>
+              <Link href={`/product/${product.slug}`}>
+                <h3 className="font-semibold text-sm sm:text-base line-clamp-2 hover:text-foreground/80 transition-colors">{product.name}</h3>
+              </Link>
               <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{product.shortDescription}</p>
               <RatingStars rating={product.rating} count={product.reviewCount} className="mt-2" />
             </div>
@@ -90,14 +92,15 @@ export default function ProductCard({ product, view = 'grid' }: Props) {
               </div>
               <button
                 onClick={handleAddToCart}
-                className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-xl text-sm font-medium hover:bg-foreground/90 transition-all active:scale-95"
+                disabled={adding || defaultVariant?.stock === 0}
+                className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-xl text-sm font-medium hover:bg-foreground/90 transition-all active:scale-95 disabled:opacity-40"
               >
                 <ShoppingCart className="w-4 h-4" />
                 Add
               </button>
             </div>
           </div>
-        </Link>
+        </div>
       </motion.div>
     )
   }
