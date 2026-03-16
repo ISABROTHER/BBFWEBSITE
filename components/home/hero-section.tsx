@@ -1,10 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { ArrowRight, ChevronLeft, ChevronRight, Zap, Shield, Truck } from 'lucide-react'
-import { getActiveBanners } from '@/lib/data'
 
 const slides = [
   {
@@ -67,87 +66,112 @@ export default function HeroSection() {
     return () => clearInterval(id)
   }, [auto])
 
+  const pauseAutoplay = useCallback(() => {
+    setAuto(false)
+  }, [])
+
   const prev = () => { setCurrent((c) => (c - 1 + slides.length) % slides.length); setAuto(false) }
   const next = () => { setCurrent((c) => (c + 1) % slides.length); setAuto(false) }
 
   const slide = slides[current]
 
   return (
-    <section className={`relative bg-gradient-to-br ${slide.bg} transition-all duration-700 overflow-hidden min-h-[520px] sm:min-h-[600px] lg:min-h-[680px]`}>
+    <section 
+      className={`relative bg-gradient-to-br ${slide.bg} transition-all duration-700 overflow-hidden min-h-[520px] sm:min-h-[600px] lg:min-h-[680px]`}
+      onMouseEnter={pauseAutoplay}
+      onFocusCapture={pauseAutoplay}
+      onPointerDown={pauseAutoplay}
+    >
       <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle_at_50%_50%,_white,_transparent_70%)]" />
 
       <div className="section-container relative z-10">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center min-h-[520px] sm:min-h-[600px] lg:min-h-[680px] py-16 lg:py-24">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={current}
-              initial={{ opacity: 0, x: -30 }}
+          <div className="text-white space-y-6">
+            <motion.span 
+              key={`badge-${current}`}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className={`inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest ${slide.accent} bg-white/10 px-3 py-1.5 rounded-full`}
+            >
+              <Zap className="w-3 h-3" />
+              {slide.badge}
+            </motion.span>
+
+            <motion.h1 
+              key={`title-${current}`}
+              initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 30 }}
-              transition={{ duration: 0.5 }}
-              className="text-white space-y-6"
+              transition={{ duration: 0.4, delay: 0.1 }}
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight"
             >
-              <span className={`inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest ${slide.accent} bg-white/10 px-3 py-1.5 rounded-full`}>
-                <Zap className="w-3 h-3" />
-                {slide.badge}
-              </span>
-
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
-                {slide.title}
-              </h1>
-              <p className="text-xl sm:text-2xl font-medium text-white/70 leading-snug">
-                {slide.subtitle}
-              </p>
-              <p className="text-white/50 text-base leading-relaxed max-w-md">
-                {slide.description}
-              </p>
-
-              <div className="flex flex-wrap gap-3 pt-2">
-                <Link
-                  href={slide.ctaLink}
-                  className="inline-flex items-center gap-2 bg-white text-slate-900 px-6 py-3 rounded-xl font-semibold hover:bg-white/90 transition-all active:scale-95 text-sm"
-                >
-                  {slide.cta}
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-                <Link
-                  href={slide.ctaSecondaryLink}
-                  className="inline-flex items-center gap-2 bg-white/10 text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/20 transition-all active:scale-95 text-sm border border-white/20"
-                >
-                  {slide.ctaSecondary}
-                </Link>
-              </div>
-
-              <div className="flex items-center gap-6 pt-2">
-                {trustBadges.map(({ icon: Icon, text }) => (
-                  <div key={text} className="flex items-center gap-2 text-white/60 text-xs">
-                    <Icon className="w-3.5 h-3.5" />
-                    {text}
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`img-${current}`}
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: -20 }}
-              transition={{ duration: 0.5 }}
-              className="hidden lg:block relative"
+              {slide.title}
+            </motion.h1>
+            
+            <motion.p 
+              key={`subtitle-${current}`}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              className="text-xl sm:text-2xl font-medium text-white/70 leading-snug"
             >
-              <div className="relative w-full aspect-square max-w-md mx-auto">
-                <div className="absolute inset-0 bg-white/5 rounded-3xl" />
-                <img
-                  src={slide.image}
-                  alt={slide.title}
-                  className="w-full h-full object-cover rounded-3xl shadow-2xl animate-float"
-                />
-              </div>
-            </motion.div>
-          </AnimatePresence>
+              {slide.subtitle}
+            </motion.p>
+            
+            <motion.p 
+              key={`desc-${current}`}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4, delay: 0.3 }}
+              className="text-white/50 text-base leading-relaxed max-w-md"
+            >
+              {slide.description}
+            </motion.p>
+
+            <div className="flex flex-wrap gap-3 pt-2">
+              <Link
+                href={slide.ctaLink}
+                onClick={pauseAutoplay}
+                className="inline-flex items-center gap-2 bg-white text-slate-900 px-6 py-3 rounded-xl font-semibold hover:bg-white/90 transition-all active:scale-95 text-sm"
+              >
+                {slide.cta}
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                href={slide.ctaSecondaryLink}
+                onClick={pauseAutoplay}
+                className="inline-flex items-center gap-2 bg-white/10 text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/20 transition-all active:scale-95 text-sm border border-white/20"
+              >
+                {slide.ctaSecondary}
+              </Link>
+            </div>
+
+            <div className="flex items-center gap-6 pt-2">
+              {trustBadges.map(({ icon: Icon, text }) => (
+                <div key={text} className="flex items-center gap-2 text-white/60 text-xs">
+                  <Icon className="w-3.5 h-3.5" />
+                  {text}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <motion.div
+            key={`img-${current}`}
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="hidden lg:block relative"
+          >
+            <div className="relative w-full aspect-square max-w-md mx-auto">
+              <div className="absolute inset-0 bg-white/5 rounded-3xl" />
+              <img
+                src={slide.image}
+                alt={slide.title}
+                className="w-full h-full object-cover rounded-3xl shadow-2xl animate-float"
+              />
+            </div>
+          </motion.div>
         </div>
       </div>
 
