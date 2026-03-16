@@ -15,6 +15,21 @@ const ADMIN_CREDENTIALS = {
   password: 'admin123',
 }
 
+const safeSessionStorage = {
+  getItem: (name: string) => {
+    if (typeof window === 'undefined') return null
+    try { return sessionStorage.getItem(name) } catch { return null }
+  },
+  setItem: (name: string, value: string) => {
+    if (typeof window === 'undefined') return
+    try { sessionStorage.setItem(name, value) } catch {}
+  },
+  removeItem: (name: string) => {
+    if (typeof window === 'undefined') return
+    try { sessionStorage.removeItem(name) } catch {}
+  },
+}
+
 export const useAdminStore = create<AdminState>()(
   persist(
     (set) => ({
@@ -33,7 +48,8 @@ export const useAdminStore = create<AdminState>()(
     }),
     {
       name: 'nova-admin',
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => safeSessionStorage),
+      skipHydration: true,
     }
   )
 )

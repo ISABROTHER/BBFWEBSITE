@@ -7,7 +7,6 @@ import { motion } from 'framer-motion'
 import { Store, Search, ShoppingCart, Package } from 'lucide-react'
 import { useCartStore } from '@/store/cart-store'
 import { cn } from '@/lib/utils'
-import SearchOverlay from './search-overlay'
 
 const navItems = [
   { label: 'Shop', href: '/shop', icon: Store },
@@ -16,11 +15,14 @@ const navItems = [
   { label: 'Track', href: '/track-order', icon: Package },
 ]
 
-export default function BottomNav() {
+interface BottomNavProps {
+  onOpenSearch: () => void
+}
+
+export default function BottomNav({ onOpenSearch }: BottomNavProps) {
   const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
   const itemCount = useCartStore((s) => s.getItemCount())
-  const [searchOpen, setSearchOpen] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -42,7 +44,7 @@ export default function BottomNav() {
               return (
                 <button
                   key={item.label}
-                  onClick={() => setSearchOpen(true)}
+                  onClick={onOpenSearch}
                   className="flex-1 flex flex-col items-center justify-center gap-1 py-2.5 text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <Icon className="w-5 h-5" />
@@ -85,8 +87,6 @@ export default function BottomNav() {
           })}
         </div>
       </nav>
-
-      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
 
       <div className="h-16 lg:hidden" />
     </>

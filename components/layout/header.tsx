@@ -8,7 +8,6 @@ import { ShoppingCart, Search, Menu, X, MapPin, Phone, Zap, Settings } from 'luc
 import { useCartStore } from '@/store/cart-store'
 import { Sheet, SheetContent } from '@/components/ui/sheet'
 import { cn } from '@/lib/utils'
-import SearchOverlay from './search-overlay'
 
 const navLinks = [
   { label: 'Shop', href: '/shop' },
@@ -33,10 +32,13 @@ const mobileMenuLinks = [
   { label: 'Admin Panel', href: '/admin/login', icon: '⚙️' },
 ]
 
-export default function Header() {
+interface HeaderProps {
+  onOpenSearch: () => void
+}
+
+export default function Header({ onOpenSearch }: HeaderProps) {
   const [mounted, setMounted] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [searchOpen, setSearchOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const itemCount = useCartStore((s) => s.getItemCount())
   const pathname = usePathname()
@@ -93,7 +95,7 @@ export default function Header() {
 
             <div className="flex items-center gap-1 sm:gap-2">
               <button
-                onClick={() => setSearchOpen(true)}
+                onClick={onOpenSearch}
                 className="p-2 rounded-xl hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
                 aria-label="Search"
               >
@@ -145,8 +147,6 @@ export default function Header() {
           </div>
         </div>
       </header>
-
-      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
 
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
         <SheetContent side="right" className="w-full sm:w-80 p-0 flex flex-col">

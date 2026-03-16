@@ -14,6 +14,21 @@ interface UIState {
   isWishlisted: (productId: string) => boolean
 }
 
+const safeLocalStorage = {
+  getItem: (name: string) => {
+    if (typeof window === 'undefined') return null
+    try { return localStorage.getItem(name) } catch { return null }
+  },
+  setItem: (name: string, value: string) => {
+    if (typeof window === 'undefined') return
+    try { localStorage.setItem(name, value) } catch {}
+  },
+  removeItem: (name: string) => {
+    if (typeof window === 'undefined') return
+    try { localStorage.removeItem(name) } catch {}
+  },
+}
+
 export const useUIStore = create<UIState>()(
   persist(
     (set, get) => ({
@@ -55,7 +70,8 @@ export const useUIStore = create<UIState>()(
     }),
     {
       name: 'nova-ui',
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => safeLocalStorage),
+      skipHydration: true,
     }
   )
 )

@@ -2,6 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Toaster } from '@/components/ui/sonner'
+import StoreProvider from '@/components/providers/store-provider'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -31,7 +32,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={inter.variable}>
       <body className="font-sans">
-        {children}
+        <StoreProvider>
+          {children}
+        </StoreProvider>
         <Toaster position="top-center" richColors closeButton />
       </body>
     </html>

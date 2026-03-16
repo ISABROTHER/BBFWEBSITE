@@ -26,6 +26,21 @@ const SHIPPING_FEE = 15
 const FREE_SHIPPING_THRESHOLD = 99
 const TAX_RATE = 0.08
 
+const safeLocalStorage = {
+  getItem: (name: string) => {
+    if (typeof window === 'undefined') return null
+    try { return localStorage.getItem(name) } catch { return null }
+  },
+  setItem: (name: string, value: string) => {
+    if (typeof window === 'undefined') return
+    try { localStorage.setItem(name, value) } catch {}
+  },
+  removeItem: (name: string) => {
+    if (typeof window === 'undefined') return
+    try { localStorage.removeItem(name) } catch {}
+  },
+}
+
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
@@ -116,7 +131,8 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: 'nova-cart',
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => safeLocalStorage),
+      skipHydration: true,
     }
   )
 )
